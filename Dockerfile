@@ -1,5 +1,7 @@
 FROM ruby
+#
 MAINTAINER inokappa
+#
 RUN apt-get update
 RUN gem install fluentd fluent-plugin-azurestorage fluent-mixin-config-placeholders --no-ri --no-rdoc
 RUN gem uninstall azure --version '0.7.0' --ignore-dependencies
