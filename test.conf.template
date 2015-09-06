@@ -1,0 +1,29 @@
+\\<source\\>
+  type forward
+  port 24224
+  bind 0.0.0.0
+\\</source\\>
+\\<match docker.*\\>
+  type copy
+    \\<store\\>
+      type stdout
+    \\</store\\>
+    \\<store\\>
+      type azurestorage
+
+      azure_storage_account    $STORAGE_NAME
+      azure_storage_access_key $STORAGE_ACCESS_KEY
+      azure_container          $STORAGE_CONTAINER
+      azure_storage_type       blob
+      store_as                 json
+      auto_create_container    true
+      path                     logs/
+      azure_object_key_format  %{path}%{time_slice}_%{index}.%{file_extension}
+      buffer_path              /var/log/td-agent/buffer/azurestorage
+
+      time_slice_format        %Y%m%d-%H
+      time_slice_wait          10m
+      utc
+      flush_interval           10s
+    \\</store\\>
+\\</match\\>
